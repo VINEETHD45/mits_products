@@ -40,10 +40,24 @@ public class UserController {
      * Get only one specific user
      * --------------------------
      */
-    @PostMapping(path = "/id")
+    @GetMapping(path = "/fetch")
     public @ResponseBody
     Optional<User> getUser(@RequestParam Integer id) {
         return userRepository.findById(id);
+    }
+
+
+    /**
+     * --------------------
+     * delete record here
+     * --------------------
+     */
+    @PostMapping(path = "/destroy")
+    public @ResponseBody
+    String delUser(@RequestParam Integer id) {
+        userRepository.deleteById(id);
+
+        return "Successfully deleted " + id;
     }
 
     /**

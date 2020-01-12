@@ -9,7 +9,7 @@ This project shows how to use spring boot rest api and storing the responses to 
 - Run the project. This will start the project at *http://localhost:8080/*
 
 ## Tools
-- Tools to use *(optional)* SoapAPI or Postman
+- Tools to use *(optional)* SoapUI or Postman
 
 ## Step 2 (Adding new user).
 - Make a *post* request to *http://localhost:8080/api/add* with the following params

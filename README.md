@@ -4,12 +4,14 @@
 This project shows how to use spring boot rest api and storing the responses to the database.
 
 # Guide.
+- For better understanding download the project and follow the steps.
+
+## Tools
+- Tools to use *(optional)* [SoapUI](https://www.soapui.org/) or [Postman](https://www.getpostman.com/)
+
 ## Step 1.
 - After downloading the project create a database name called *api* and set the database *username* and *password* in the file *application.properties* in the *resource folder*
 - Run the project. This will start the project at *http://localhost:8080/*
-
-## Tools
-- Tools to use *(optional)* SoapUI or Postman
 
 ## Step 2 (Adding new user).
 - Make a *post* request to *http://localhost:8080/api/add* with the following params

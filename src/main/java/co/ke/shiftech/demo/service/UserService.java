@@ -2,6 +2,8 @@ package co.ke.shiftech.demo.service;
 
 import co.ke.shiftech.demo.model.User;
 
+import java.util.List;
+
 public interface UserService {
     User create(User user);
 
@@ -11,5 +13,5 @@ public interface UserService {
 
     User update(Long id, User user);
 
-    Iterable<User> findAll();
+    List<User> findAll();
 }

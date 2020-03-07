@@ -2,14 +2,14 @@ package co.ke.shiftech.demo.controller;
 
 import co.ke.shiftech.demo.model.User;
 import co.ke.shiftech.demo.service.UserService;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-@Controller
+@RestController
 @RequestMapping(value = "/")
 public class UserController {
     private final UserService userService;
@@ -45,7 +45,7 @@ public class UserController {
      * --------------------
      */
     @DeleteMapping
-    public Map<String, Object> delete(@PathVariable Long id) {
+    public Map<String, Object> delete(@RequestParam Long id) {
         Map<String, Object> response = new HashMap<>();
         response.put("deleted", userService.delete(id));
         return response;
@@ -57,7 +57,7 @@ public class UserController {
      * ----------------------
      */
     @GetMapping(path = "all")
-    public Iterable<User> findAll() {
+    public List<User> findAll() {
         return userService.findAll();
     }
 

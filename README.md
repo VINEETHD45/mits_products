@@ -14,34 +14,42 @@ This project shows how to use spring boot rest api and storing the responses to 
 - Run the project. This will start the project at *http://localhost:8080/*
 
 ## Step 2 (Adding new user).
-- Make a *post* request to *http://localhost:8080/api/add* with the following params
+- Make a *post* request to *http://localhost:8080/api/v1* with the following params
 
 ```bash
-   http://localhost:8080/api/add
+   http://localhost:8080/api/v1
    
    params name,email and phoneNumber
 ```
 ## Step 3 (Fetching Single Record)
-- Make a *get* request to *http://localhost:8080/api/fetch* with the following params
+- Make a *get* request to *http://localhost:8080/api/v1/{id}* with the following params
 
 ```bash
-   http://localhost:8080/api/fetch
+   http://localhost:8080/api/v1
    
    params id
 ```
 ## Step 4 (Deleting Single Record)
-- Make a *post* request to *http://localhost:8080/api/destroy* with the following params
+- Make a *delete* request to *http://localhost:8080/api/v1* with the following params
 
 ```bash
-   http://localhost:8080/api/destroy
+   http://localhost:8080/api/v1
    
    params id
 ```
 ## Step 5 (Fetching All Records)
-- Make a *get* request to *http://localhost:8080/api/all* .
+- Make a *get* request to *http://localhost:8080/api/v1/all* .
 
 ```bash
-   http://localhost:8080/api/all
+   http://localhost:8080/api/v1/all
+```
+## Step 6 (Update new user).
+- Make a *patch* request to *http://localhost:8080/api/v1* with the following params
+
+```bash
+   http://localhost:8080/api/v1
+   
+   params id,name,email and phoneNumber
 ```
 
 #### Hope You Understood the flow. *O_o*

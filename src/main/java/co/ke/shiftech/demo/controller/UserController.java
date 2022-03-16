@@ -2,6 +2,7 @@ package co.ke.shiftech.demo.controller;
 
 import co.ke.shiftech.demo.model.User;
 import co.ke.shiftech.demo.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -10,9 +11,9 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping(value = "/")
+@RequestMapping(value = "/users")
 public class UserController {
-    private final UserService userService;
+    final UserService userService;
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -56,7 +57,7 @@ public class UserController {
      * Fetch all users here
      * ----------------------
      */
-    @GetMapping(path = "all")
+    @GetMapping
     public List<User> findAll() {
         return userService.findAll();
     }

@@ -12,13 +12,13 @@ public class User {
     @Column(updatable = false)
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(unique = true, name = "email")
+    @Column(unique = true, name = "email", nullable = false)
     private String email;
 
-    @Column(unique = true, name = "phoneNumber")
+    @Column(unique = true, name = "phoneNumber", nullable = true)
     private String phoneNumber;
 
     @Temporal(value = TemporalType.TIMESTAMP)

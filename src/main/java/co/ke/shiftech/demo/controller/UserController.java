@@ -2,7 +2,6 @@ package co.ke.shiftech.demo.controller;
 
 import co.ke.shiftech.demo.model.User;
 import co.ke.shiftech.demo.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

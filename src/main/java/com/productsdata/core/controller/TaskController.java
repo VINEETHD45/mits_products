@@ -67,7 +67,7 @@ public class TaskController {
     }
 
     // Create a new user
-    @PostMapping("/api/user")
+    @PostMapping("/api/users")
     public ResponseEntity<User> createUser(@RequestBody CreateUser createUser) {
         User user = new User();
         user.setUsername(createUser.getUsername());
@@ -91,7 +91,7 @@ public class TaskController {
         task.setDescription(createTask.getDescription());
         task.setDueDate(convertLocalDateToDate(createTask.getDueDate()));
         task.setTaskStatus(TaskStatus.valueOf(createTask.getStatus()));
-        if (createTask.getStatus().equalsIgnoreCase("completed")) {
+        if (createTask.getStatus().equalsIgnoreCase(TaskStatus.Completed.toString())) {
             task.setCompletedDate(new Date());
         }
 
@@ -123,7 +123,7 @@ public class TaskController {
         }
 
         if (user == null) {
-            return ResponseEntity.badRequest().body(new MessageResponse("User not found with ID: " + userId));
+            return ResponseEntity.badRequest().body(new MessageResponse("User not found with ID: " + userId.getUserID()));
         }
 
         AssignedTask assignedTask = new AssignedTask();
@@ -224,7 +224,7 @@ public class TaskController {
 
     // Utility method to convert LocalDate to Date
     private static Date convertLocalDateToDate(LocalDate localDate) {
-        return Date.from(localDate.atStartOfDay(ZoneId.of("UTC")).toInstant());
+        return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
     }
 
     // Utility method to convert LocalDateTime to Date

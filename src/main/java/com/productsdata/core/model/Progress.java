@@ -2,14 +2,14 @@ package com.productsdata.core.model;
 
 public class Progress {
 
-	private Integer progress;
+	private Integer progressBar;
 
 	public Integer getProgress() {
-		return progress;
+		return progressBar;
 	}
 
 	public void setProgress(Integer progress) {
-		this.progress = progress;
+		this.progressBar = progress;
 	}
 	
 	

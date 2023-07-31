@@ -3,6 +3,7 @@ package com.productsdata.core.controller;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.mysql.cj.protocol.Message;
 import com.productsdata.core.entity.AssignedTask;
 import com.productsdata.core.entity.Tasks;
 import com.productsdata.core.entity.User;
@@ -190,6 +192,30 @@ public class TaskController {
         return ResponseEntity.ok(new MessageResponse(gson.toJson(overdueTasks)));
     }
 
+    
+    @GetMapping("/api/tasks/status/{status}")
+    public ResponseEntity<MessageResponse> getSpecificStatus(@PathVariable String status){
+    	TaskStatus requestedStatus;
+    	 List<Tasks> specificTasks = new ArrayList<Tasks>();
+        try {
+            // Parse the status string to an enum value
+            requestedStatus = TaskStatus.valueOf(status.toUpperCase());
+    	
+            specificTasks    = tasksRepository.findAll().stream()
+                    .filter(task -> task.getTaskStatus() == requestedStatus)
+                    .collect(Collectors.toList());
+
+    	
+            
+        }catch(Exception ex) {
+        	
+        }
+        return ResponseEntity.ok(new MessageResponse(gson.toJson(specificTasks)));
+    }
+    
+    
+    
+    
     // Get completed tasks by date range
     @GetMapping("/api/tasks/completed")
     public ResponseEntity<MessageResponse> getCompletedTasksByDateRange(

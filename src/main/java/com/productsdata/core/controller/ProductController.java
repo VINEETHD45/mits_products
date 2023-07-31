@@ -2,6 +2,7 @@ package com.productsdata.core.controller;
 
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -17,6 +18,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.productsdata.core.entity.ApprovalQueue;
 import com.productsdata.core.entity.Product;
 import com.productsdata.core.model.MessageResponse;
@@ -26,6 +30,7 @@ import com.productsdata.core.repository.ProductRepository;
 
 @RestController
 public class ProductController {
+	Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create(); 
 
     @Autowired
     private ProductRepository productRepository;
@@ -38,7 +43,7 @@ public class ProductController {
 
     // Get active products
     @GetMapping("/api/products")
-    public ResponseEntity<?> getActiveProducts() {
+    public ResponseEntity<MessageResponse> getActiveProducts() {
         // Fetch a list of all active products from the database
         List<Product> productList = productRepository.getAllActiveProductList();
 
@@ -47,13 +52,13 @@ public class ProductController {
             return ResponseEntity.ok(new MessageResponse("No active record found"));
         } else {
             // If active products are found, return the list of products
-            return ResponseEntity.ok(productList);
+            return ResponseEntity.ok(new MessageResponse(gson.toJson(productList)));
         }
     }
 
     // Search products based on criteria
     @GetMapping("/api/products/search")
-    public ResponseEntity<?> searchRequiredProducts(
+    public ResponseEntity<List<Product>> searchRequiredProducts(
             // Request parameters for filtering the search
             @RequestParam(required = false) String productName,
             @RequestParam(required = false) BigDecimal minPrice,
@@ -66,7 +71,7 @@ public class ProductController {
 
         if (productList.isEmpty()) {
             // If no matching products are found, return a message response indicating that
-            return ResponseEntity.ok(new MessageResponse("No records found"));
+            return ResponseEntity.ok(Collections.emptyList());
         } else {
             // If matching products are found, return the list of products
             return ResponseEntity.ok(productList);
@@ -75,7 +80,7 @@ public class ProductController {
     
     // Create a product
     @PostMapping("/api/products")
-    public ResponseEntity<?> createProduct(@RequestBody ProductRequestDto productRequestDto) {
+    public ResponseEntity<MessageResponse> createProduct(@RequestBody ProductRequestDto productRequestDto) {
         // Check if the product price exceeds the maximum allowed price
         if (productRequestDto.getPrice().compareTo(MAX_ALLOWED_PRICE) > 0) {
             // If the price exceeds the limit, return a bad request with an error message
@@ -98,7 +103,7 @@ public class ProductController {
 
         // Save the product directly to the database since it does not require approval
         product = productRepository.save(product);
-        return ResponseEntity.ok(product);
+        return ResponseEntity.ok(new MessageResponse(gson.toJson(product)));
     }
 
     // Helper method to add a product to the approval queue
@@ -110,7 +115,7 @@ public class ProductController {
 
     // Update a product
     @PutMapping("/api/products/{productId}")
-    public ResponseEntity<?> updateProduct(@PathVariable Long productId, @RequestBody ProductRequestDto productRequestDto) {
+    public ResponseEntity<MessageResponse> updateProduct(@PathVariable Long productId, @RequestBody ProductRequestDto productRequestDto) {
         // Check if the product price exceeds the maximum allowed price
         if (productRequestDto.getPrice().compareTo(MAX_ALLOWED_PRICE) > 0) {
             // If the price exceeds the limit, return a bad request with an error message
@@ -146,7 +151,7 @@ public class ProductController {
 
     // Delete a product
     @DeleteMapping("/api/products/{productId}")
-    public ResponseEntity<?> deleteProduct(@PathVariable Long productId) {
+    public ResponseEntity<MessageResponse> deleteProduct(@PathVariable Long productId) {
         // Find the product in the database by its ID
         Product product = productRepository.findById(productId).orElse(null);
 
@@ -163,7 +168,7 @@ public class ProductController {
 
     // Get all products in the approval queue
     @GetMapping("/api/products/approval-queue")
-    public ResponseEntity<?> getAllProductsInApprovalQueue() {
+    public ResponseEntity<MessageResponse> getAllProductsInApprovalQueue() {
         // Fetch a list of all products in the approval queue from the database
         List<ApprovalQueue> approvalList = approvalQueueRepository.getListByDate();
 
@@ -172,13 +177,13 @@ public class ProductController {
             return ResponseEntity.ok(new MessageResponse("No active record found in approval queue."));
         } else {
             // If products are found in the approval queue, return the list of products
-            return ResponseEntity.ok(approvalList);
+            return ResponseEntity.ok(new MessageResponse(gson.toJson(approvalList)));
         }
     }
 
     // Approve or reject a product from the approval queue
     @PutMapping("/api/products/approval-queue/{approvalId}")
-    public ResponseEntity<?> approveOrRejectProduct(@PathVariable long approvalId, @RequestParam String status) {
+    public ResponseEntity<MessageResponse> approveOrRejectProduct(@PathVariable long approvalId, @RequestParam String status) {
         // Find the approval queue entry in the database by its ID
         ApprovalQueue approvalQueue = approvalQueueRepository.findById(approvalId).orElse(null);
 
